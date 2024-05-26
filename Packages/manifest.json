@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+    "com.unity.burst": "1.8.15",
+    "com.unity.collab-proxy": "2.3.1",
+    "com.unity.feature.development": "1.0.1",
+    "com.unity.postprocessing": "3.4.0",
+    "com.unity.textmeshpro": "3.0.9",
+    "com.unity.ugui": "1.0.0",
+    "com.vrmc.gltf": "https://github.com/JLChnToZ/UniVRM-UniTask.git?path=/Assets/UniGLTF",
+    "com.vrmc.univrm": "https://github.com/JLChnToZ/UniVRM-UniTask.git?path=/Assets/VRM",
+    "com.vrmc.vrm": "https://github.com/JLChnToZ/UniVRM-UniTask.git?path=/Assets/VRM10",
+    "com.vrmc.vrmshaders": "https://github.com/JLChnToZ/UniVRM-UniTask.git?path=/Assets/VRMShaders",
+    "com.unity.modules.androidjni": "1.0.0",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.imageconversion": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.ui": "1.0.0"
+  }
+}
