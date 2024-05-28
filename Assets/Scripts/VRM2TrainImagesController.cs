@@ -42,6 +42,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
     [SerializeField] Button loadButton, generatePoseButton, generateFaceButton, cancelButon;
     [SerializeField] TMP_Text vrmInfoText, facialCountText;
     [SerializeField] TMP_InputField countInput, delayInput;
+    [SerializeField] Slider randomnessSlider;
     [SerializeField] GameObject generateButtonContainer;
     [SerializeField] RectTransform generateProgressBar;
     [SerializeField] new Camera camera;
@@ -51,9 +52,10 @@ public class VRM2TrainImagesController : MonoBehaviour {
     Transform cameraTransform;
     CancellationTokenSource cancelTokenSource;
     GenerateMode generateMode = GenerateMode.FullBody;
-    HashSet<Transform> fullBodyBones = new HashSet<Transform>(), headShotBones = new HashSet<Transform>();
+    readonly HashSet<Transform> fullBodyBones = new(), headShotBones = new();
     string modelName;
     int expressionCounter;
+    int fileNameCounter;
     UnityRandom random;
 
     static void Noop() {}
@@ -150,6 +152,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
         fullBodyBones.Clear();
         headShotBones.Clear();
         facialCountText.text = "-";
+        fileNameCounter = 0;
     }
 
     void CancelGenerate() {
@@ -194,7 +197,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
         RenderTexture rt = null;
         var modelNameForFile = string.IsNullOrEmpty(modelName) ? "VRMModel" : fileNameSanitizer.Replace(modelName, "_");
         try {
-            rt = RenderTexture.GetTemporary(1024, 1024, 24);
+            rt = RenderTexture.GetTemporary(512, 512, 24);
             for (int i = 0; i < count; i++) {
                 if (cancelToken.IsCancellationRequested) break;
                 await UniTask.SwitchToMainThread();
@@ -204,15 +207,12 @@ public class VRM2TrainImagesController : MonoBehaviour {
                 }
                 if (delay <= 0) await UniTask.Yield();
                 else await UniTask.Delay((int)(delay * 1000));
-                var filepath = Path.Combine(dirPath, $"{modelNameForFile}_{generateMode}_{i:D4}.png");
+                var filepath = Path.Combine(dirPath, $"{modelNameForFile}_{generateMode}_{fileNameCounter++:D4}.png");
                 var oldRT = camera.targetTexture;
-                // var oldActiveRT = RenderTexture.active;
                 try {
-                    // RenderTexture.active = rt;
                     camera.targetTexture = rt;
                     camera.Render();
                 } finally {
-                    // RenderTexture.active = oldActiveRT;
                     camera.targetTexture = oldRT;
                 }
                 try {
@@ -226,6 +226,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
                 } catch (Exception ex) {
                     Debug.LogException(ex);
                 }
+                await UniTask.SwitchToMainThread();
                 generateProgressBar.anchorMax = new Vector2((float)(i + 1) / count, 1);
             }
         } finally {
@@ -250,14 +251,18 @@ public class VRM2TrainImagesController : MonoBehaviour {
     void RandomizePose() {
         if (vrmPoseHandler == null) return;
         vrmPoseHandler.GetHumanPose(ref pose);
+        float randomness = randomnessSlider.value;
         for (int i = 0; i < pose.muscles.Length; i++)
-            pose.muscles[i] = random.NextFloat(-0.7F, 0.7F);
+            pose.muscles[i] = random.NextFloat(
+                math.lerp(StandingMuscles[i], -1, randomness),
+                math.lerp(StandingMuscles[i], 1, randomness)
+            );
         // Eyes special treatment: look at same direction
         pose.muscles[17] = pose.muscles[15]; // Up-Down
         pose.muscles[18] = -pose.muscles[16]; // In-Out
         vrmPoseHandler.SetHumanPose(ref pose);
         SetFacial(-1);
-        PlaceCameraFullBody(random.NextFloat2(new float2(-30F, -90F), new float2(45F, 90F)));
+        PlaceCameraFullBody(random.NextFloat2(new float2(-40F, -60F), new float2(20F, 60F)));
     }
 
     void RandomizeFacial() {
