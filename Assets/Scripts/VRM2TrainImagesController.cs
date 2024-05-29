@@ -26,22 +26,72 @@ public class VRM2TrainImagesController : MonoBehaviour {
         0.6F, 0, 0, 1, 0, 0, 0, 0, // Right Foot (30-37)
         0.1F, 0, -0.6F, 0.1F, 0.1F, 0.9F, -0.1F, 0, 0, // Left Hand (38-46)
         0.1F, 0, -0.6F, 0.1F, 0.1F, 0.9F, -0.1F, 0, 0, // Right Hand (47-55)
-        0, 0, 0, 0, // Left Thumb (56-59)
-        0, 0, 0, 0, // Left Index (60-63)
-        0, 0, 0, 0, // Left Middle (64-67)
-        0, 0, 0, 0, // Left Ring (68-71)
-        0, 0, 0, 0, // Left Little (72-75)
-        0, 0, 0, 0, // Right Thumb (76-79)
-        0, 0, 0, 0, // Right Index (80-83)
-        0, 0, 0, 0, // Right Middle (84-87)
-        0, 0, 0, 0, // Right Ring (88-91)
-        0, 0, 0, 0, // Right Little (92-95)
+        -0.5F, 0, 0, 0, // Left Thumb (56-59)
+        0.5F, 0, 0.5F, 0.5F, // Left Index (60-63)
+        0.5F, 0, 0.5F, 0.5F, // Left Middle (64-67)
+        0.5F, 0, 0.5F, 0.5F, // Left Ring (68-71)
+        0.5F, 0, 0.5F, 0.5F, // Left Little (72-75)
+        -0.5F, 0, 0, 0, // Right Thumb (76-79)
+        0.5F, 0, 0.5F, 0.5F, // Right Index (80-83)
+        0.5F, 0, 0.5F, 0.5F, // Right Middle (84-87)
+        0.5F, 0, 0.5F, 0.5F, // Right Ring (88-91)
+        0.5F, 0, 0.5F, 0.5F, // Right Little (92-95)
     };
-    static readonly Regex fileNameSanitizer = new Regex(@"[^\w\d\-_]", RegexOptions.Compiled);
+    static readonly Dictionary<int, (int target, bool flipped)> Reflect = new() {
+        [3] = (0, false), [4] = (1, false), [5] = (2, false),
+        [6] = (0, false), [7] = (1, false), [8] = (2, false),
+        [12] = (9, false), [13] = (10, false), [14] = (11, false),
+        [17] = (15, false), [18] = (16, true),
+        [58] = (57, false), [62] = (61, false), [66] = (65, false), [70] = (69, false), [74] = (73, false),
+        [78] = (77, false), [82] = (81, false), [86] = (85, false), [90] = (89, false), [94] = (93, false),
+    };
+    static readonly Dictionary<int, (float min, float max)> Limits = new() {
+        [0] = (-0.5F, 0.5F),
+        [1] = (-0.5F, 0.5F),
+        [2] = (-0.5F, 0.5F),
+        [9] = (-0.5F, 0.5F),
+        [10] = (-0.5F, 0.5F),
+        [11] = (-0.5F, 0.5F),
+
+        [22] = (0, 1),
+        [23] = (-1, 0.1F),
+        [24] = (-0.4F, 1),
+        [25] = (0, 0),
+
+        [30] = (0, 1),
+        [31] = (-1, 0.1F),
+        [32] = (-0.4F, 1),
+        [33] = (0, 0),
+
+        [39] = (-0.5F, 1),
+        [40] = (-0.5F, 0.9F),
+        [41] = (-0.5F, 0.5F),
+        [42] = (-0.8F, 1),
+        [44] = (-0.5F, 1),
+
+        [48] = (-0.5F, 1),
+        [49] = (-0.5F, 0.9F),
+        [50] = (-0.5F, 0.5F),
+        [51] = (-0.8F, 1),
+        [53] = (-0.5F, 1),
+
+        [57] = (-1, 0.7F),
+        [61] = (-1, 0.7F),
+        [65] = (-1, 0.7F),
+        [69] = (-1, 0.7F),
+        [73] = (-1, 0.7F),
+
+        [77] = (-1, 0.7F),
+        [81] = (-1, 0.7F),
+        [85] = (-1, 0.7F),
+        [89] = (-1, 0.7F),
+        [93] = (-1, 0.7F),
+    };
+    static readonly Regex fileNameSanitizer = new(@"[^\w\d\-_]", RegexOptions.Compiled);
 
     [SerializeField] Button loadButton, generatePoseButton, generateFaceButton, cancelButon;
     [SerializeField] TMP_Text vrmInfoText, facialCountText;
-    [SerializeField] TMP_InputField countInput, delayInput;
+    [SerializeField] TMP_InputField countInput, delayInput, outputSizeInput;
     [SerializeField] Slider randomnessSlider;
     [SerializeField] GameObject generateButtonContainer;
     [SerializeField] RectTransform generateProgressBar;
@@ -69,6 +119,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
         cancelButon.onClick.AddListener(CancelGenerate);
         countInput.BindReformatter();
         delayInput.BindReformatter();
+        outputSizeInput.BindReformatter();
     }
 
     void OnVRMMetaData(Texture2D thumbnail, Meta newMeta, Vrm0Meta oldMeta) {
@@ -192,12 +243,13 @@ public class VRM2TrainImagesController : MonoBehaviour {
     async UniTaskVoid GenerateAndSaveImages(string dirPath, CancellationToken cancelToken = default) {
         if (!int.TryParse(countInput.text, out var count) || count <= 0) return;
         if (!float.TryParse(delayInput.text, out var delay)) delay = 0;
+        if (!int.TryParse(outputSizeInput.text, out var size)) size = 512;
         generateProgressBar.anchorMax = new Vector2(0, 1);
         random = new UnityRandom(unchecked((uint)DateTime.Now.Ticks));
         RenderTexture rt = null;
         var modelNameForFile = string.IsNullOrEmpty(modelName) ? "VRMModel" : fileNameSanitizer.Replace(modelName, "_");
         try {
-            rt = RenderTexture.GetTemporary(512, 512, 24);
+            rt = RenderTexture.GetTemporary(size, size, 24);
             for (int i = 0; i < count; i++) {
                 if (cancelToken.IsCancellationRequested) break;
                 await UniTask.SwitchToMainThread();
@@ -252,14 +304,17 @@ public class VRM2TrainImagesController : MonoBehaviour {
         if (vrmPoseHandler == null) return;
         vrmPoseHandler.GetHumanPose(ref pose);
         float randomness = randomnessSlider.value;
-        for (int i = 0; i < pose.muscles.Length; i++)
+        for (int i = 0; i < pose.muscles.Length; i++) {
+            if (Reflect.TryGetValue(i, out var treatment)) {
+                pose.muscles[i] = pose.muscles[treatment.target] * (treatment.flipped ? -1 : 1);
+                continue;
+            }
+            if (!Limits.TryGetValue(i, out var limit)) limit = (-1, 1);
             pose.muscles[i] = random.NextFloat(
-                math.lerp(StandingMuscles[i], -1, randomness),
-                math.lerp(StandingMuscles[i], 1, randomness)
+                math.lerp(StandingMuscles[i], limit.min, randomness),
+                math.lerp(StandingMuscles[i], limit.max, randomness)
             );
-        // Eyes special treatment: look at same direction
-        pose.muscles[17] = pose.muscles[15]; // Up-Down
-        pose.muscles[18] = -pose.muscles[16]; // In-Out
+        }
         vrmPoseHandler.SetHumanPose(ref pose);
         SetFacial(-1);
         PlaceCameraFullBody(random.NextFloat2(new float2(-40F, -60F), new float2(20F, 60F)));
