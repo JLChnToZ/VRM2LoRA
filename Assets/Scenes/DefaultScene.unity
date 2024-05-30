@@ -4815,14 +4815,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<color=red><b>WARNING:</b></color> This application is intended solely
-    for machine learning training purposes. Prior to loading a 3D avatar model for
-    training, please ensure that it does not contain any parts or components that
-    are disallowed by the original author. Unauthorized usage of restricted parts
-    may infringe upon the intellectual property rights of the original author. By
-    proceeding, you acknowledge your responsibility to comply with the terms and
-    conditions set by the model's author and agree to use it exclusively for training
-    purposes.\r\n\r\n<color=red><b>\u8B66\u544A:</b></color> \u3053\u306E\u30A2\u30D7\u30EA\u30B1\u30FC\u30B7\u30E7\u30F3\u306F\u3001\u6A5F\u68B0\u5B66\u7FD2\u306E\u30C8\u30EC\u30FC\u30CB\u30F3\u30B0\u76EE\u7684\u306B\u306E\u307F\u5229\u7528\u3059\u308B\u3053\u3068\u3092\u76EE\u7684\u3068\u3057\u3066\u3044\u307E\u3059\u3002\u30C8\u30EC\u30FC\u30CB\u30F3\u30B0\u7528\u306B3D\u30A2\u30D0\u30BF\u30FC\u30E2\u30C7\u30EB\u3092\u30ED\u30FC\u30C9\u3059\u308B\u524D\u306B\u3001\u5143\u306E\u4F5C\u8005\u304C\u7981\u6B62\u3057\u305F\u90E8\u5206\u3084\u30B3\u30F3\u30DD\u30FC\u30CD\u30F3\u30C8\u304C\u542B\u307E\u308C\u3066\u3044\u306A\u3044\u3053\u3068\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002\u5236\u9650\u3055\u308C\u305F\u90E8\u5206\u306E\u672A\u8A31\u53EF\u4F7F\u7528\u306F\u3001\u5143\u306E\u4F5C\u8005\u306E\u77E5\u7684\u8CA1\u7523\u6A29\u306B\u4FB5\u5BB3\u3059\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059\u3002\u9032\u884C\u3059\u308B\u3053\u3068\u3067\u3001\u30E2\u30C7\u30EB\u306E\u4F5C\u8005\u304C\u8A2D\u5B9A\u3057\u305F\u5229\u7528\u6761\u4EF6\u306B\u5F93\u3046\u8CAC\u4EFB\u3092\u8A8D\u8B58\u3057\u3001\u30C8\u30EC\u30FC\u30CB\u30F3\u30B0\u76EE\u7684\u3067\u306E\u4F7F\u7528\u306B\u540C\u610F\u3059\u308B\u3082\u306E\u3068\u3057\u307E\u3059\u3002"
+  m_text: "Please ensure that the 3D avatar model you are loading for training purposes
+    does not contain any parts for which the original author(s) have explicitly disallowed
+    usage. This includes meshes, textures, and riggings. Respect the intellectual
+    property rights of the creators and obtain proper permissions or licenses before
+    using their work. Thank you for your understanding and cooperation.\n\u30C8\u30EC\u30FC\u30CB\u30F3\u30B0\u76EE\u7684\u3067\u30ED\u30FC\u30C9\u3059\u308B3D\u30A2\u30D0\u30BF\u30FC\u30E2\u30C7\u30EB\u306B\u306F\u3001\u30AA\u30EA\u30B8\u30CA\u30EB\u306E\u4F5C\u8005\u304C\u660E\u793A\u7684\u306B\u4F7F\u7528\u3092\u7981\u6B62\u3057\u3066\u3044\u308B\u90E8\u5206\u304C\u542B\u307E\u308C\u3066\u3044\u306A\u3044\u3053\u3068\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002\u3053\u308C\u306B\u306F\u30E1\u30C3\u30B7\u30E5\u3001\u30C6\u30AF\u30B9\u30C1\u30E3\u3001\u30EA\u30B0\u304C\u542B\u307E\u308C\u307E\u3059\u3002\u4F5C\u6210\u8005\u306E\u77E5\u7684\u8CA1\u7523\u6A29\u3092\u5C0A\u91CD\u3057\u3001\u5F7C\u3089\u306E\u4F5C\u54C1\u3092\u4F7F\u7528\u3059\u308B\u524D\u306B\u9069\u5207\u306A\u8A31\u53EF\u307E\u305F\u306F\u30E9\u30A4\u30BB\u30F3\u30B9\u3092\u53D6\u5F97\u3057\u3066\u304F\u3060\u3055\u3044\u3002\u3054\u7406\u89E3\u3068\u3054\u5354\u529B\u3001\u3069\u3046\u305E\u3088\u308D\u3057\u304F\u304A\u9858\u3044\u3044\u305F\u3057\u307E\u3059\u3002"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c799ab560dd536b41b178f74ab5746d6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 44a155fc8dc498340a6b6b33d4825c02, type: 2}
@@ -4849,7 +4846,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 19.45
+  m_fontSize: 22
   m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4863,7 +4860,7 @@ MonoBehaviour:
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
+  m_paragraphSpacing: 50
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 1
