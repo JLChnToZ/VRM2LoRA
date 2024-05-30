@@ -93,7 +93,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
     [SerializeField] Button loadButton, generatePoseButton, selectColorButton, generateFaceButton, cancelButon;
     [SerializeField] TMP_Text vrmInfoText, facialCountText;
     [SerializeField] TMP_InputField countInput, delayInput, outputSizeInput;
-    [SerializeField] Slider randomnessSlider;
+    [SerializeField] Slider randomnessSlider, cameraDistanceSlider;
     [SerializeField] GameObject generateButtonContainer;
     [SerializeField] RectTransform generateProgressBar;
     [SerializeField] new Camera camera;
@@ -119,6 +119,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
         generateFaceButton.onClick.AddListener(StartGenerateFaces);
         selectColorButton.onClick.AddListener(OnSelectColor);
         cancelButon.onClick.AddListener(CancelGenerate);
+        cameraDistanceSlider.onValueChanged.AddListener(OnDistanceSliderChanged);
         countInput.BindReformatter();
         delayInput.BindReformatter();
         outputSizeInput.BindReformatter();
@@ -288,6 +289,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
             }
         } finally {
             cancelTokenSource = null;
+            generateMode = GenerateMode.FullBody;
             await UniTask.SwitchToMainThread();
             if (rt != null) RenderTexture.ReleaseTemporary(rt);
             ResetPose();
@@ -352,7 +354,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
         float3 min = float.MaxValue, max = float.MinValue;
         foreach (var bone in fullBodyBones)
             CalculacteBounds(ref min, ref max, bone);
-        PlaceCamera((min + max) / 2, yawPitch, CalculateCameraDistance(min, max, 0.75F));
+        PlaceCamera((min + max) / 2, yawPitch, CalculateCameraDistance(min, max, 0.75F * cameraDistanceSlider.value));
     }
 
     void PlaceCameraHeadShot(float2 yawPitch) {
@@ -360,7 +362,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
         float3 min = float.MaxValue, max = float.MinValue;
         foreach (var bone in headShotBones)
             CalculacteBounds(ref min, ref max, bone);
-        PlaceCamera((min + max) / 2, yawPitch, CalculateCameraDistance(min, max, 1F));
+        PlaceCamera((min + max) / 2, yawPitch, CalculateCameraDistance(min, max, cameraDistanceSlider.value));
     }
 
     static void CalculacteBounds(ref float3 min, ref float3 max, Transform bone) {
@@ -386,6 +388,13 @@ public class VRM2TrainImagesController : MonoBehaviour {
 
     void OnColorChanged(Color32 color) {
         camera.backgroundColor = color;
+    }
+
+    void OnDistanceSliderChanged(float value) {
+        switch (generateMode) {
+            case GenerateMode.FullBody: PlaceCameraFullBody(0); break;
+            case GenerateMode.FacialExpression: PlaceCameraHeadShot(0); break;
+        }
     }
 
     enum GenerateMode {
