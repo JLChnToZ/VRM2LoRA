@@ -2837,7 +2837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f51dc09bf9e35804ba0f5e76c527025e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_skin: {fileID: 11400000, guid: 758becaa4751c514ab3abd821b4078bb, type: 2}
+  m_skin: {fileID: 11400000, guid: 07c1616acb3e05d4789781b38d6ab800, type: 2}
   minWidth: 380
   minHeight: 300
   narrowScreenWidth: 380
