@@ -1190,6 +1190,8 @@ GameObject:
   - component: {fileID: 321762385}
   - component: {fileID: 321762387}
   - component: {fileID: 321762386}
+  - component: {fileID: 321762389}
+  - component: {fileID: 321762388}
   m_Layer: 5
   m_Name: Layout
   m_TagString: Untagged
@@ -1225,10 +1227,10 @@ RectTransform:
   m_Father: {fileID: 328943240}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &321762386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1242,7 +1244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
-  m_VerticalFit: 0
+  m_VerticalFit: 2
 --- !u!114 &321762387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1269,6 +1271,44 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &321762388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321762384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &321762389
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321762384}
+  m_CullTransparentMesh: 1
 --- !u!1 &328943239
 GameObject:
   m_ObjectHideFlags: 0
@@ -2014,18 +2054,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1429220953}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 420786100}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -2037,6 +2065,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1429220953}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &420786105
 MonoBehaviour:
@@ -5855,7 +5895,12 @@ MonoBehaviour:
   m_canvasAnchorZoneLength: 20
   m_panelAnchorZoneLength: 100
   initialPanelsUnanchored:
-  - tabs: []
+  - tabs:
+    - content: {fileID: 321762385}
+      id: af4aad8b-107c-43b0-aa2d-128e07616a07
+      minimumSize: {x: 280, y: 440}
+      tabLabel: Controls
+      tabIcon: {fileID: 0}
   initialPanelsAnchoredSerialized:
   - panel:
       tabs: []
@@ -6548,7 +6593,7 @@ MonoBehaviour:
   m_text: VRM Info
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c799ab560dd536b41b178f74ab5746d6, type: 2}
-  m_sharedMaterial: {fileID: -2070327861814710252, guid: c799ab560dd536b41b178f74ab5746d6, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 3b2ff120653f328468847930e6894696, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6578,7 +6623,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
@@ -6812,7 +6857,7 @@ MonoBehaviour:
   m_text: VRM2LoRA Training Data Generator
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c799ab560dd536b41b178f74ab5746d6, type: 2}
-  m_sharedMaterial: {fileID: -2070327861814710252, guid: c799ab560dd536b41b178f74ab5746d6, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 3b2ff120653f328468847930e6894696, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
