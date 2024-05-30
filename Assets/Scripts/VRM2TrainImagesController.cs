@@ -15,6 +15,7 @@ using UniVRM10.Migration;
 using UniGLTF;
 using UniGLTF.Extensions.VRMC_vrm;
 using SimpleFileBrowser;
+using RuntimeInspectorNamespace;
 
 using UnityRandom = Unity.Mathematics.Random;
 
@@ -89,7 +90,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
     };
     static readonly Regex fileNameSanitizer = new(@"[^\w\d\-_]", RegexOptions.Compiled);
 
-    [SerializeField] Button loadButton, generatePoseButton, generateFaceButton, cancelButon;
+    [SerializeField] Button loadButton, generatePoseButton, selectColorButton, generateFaceButton, cancelButon;
     [SerializeField] TMP_Text vrmInfoText, facialCountText;
     [SerializeField] TMP_InputField countInput, delayInput, outputSizeInput;
     [SerializeField] Slider randomnessSlider;
@@ -116,6 +117,7 @@ public class VRM2TrainImagesController : MonoBehaviour {
         loadButton.onClick.AddListener(LoadModelFromDialog);
         generatePoseButton.onClick.AddListener(StartGeneratePoses);
         generateFaceButton.onClick.AddListener(StartGenerateFaces);
+        selectColorButton.onClick.AddListener(OnSelectColor);
         cancelButon.onClick.AddListener(CancelGenerate);
         countInput.BindReformatter();
         delayInput.BindReformatter();
@@ -261,11 +263,14 @@ public class VRM2TrainImagesController : MonoBehaviour {
                 else await UniTask.Delay((int)(delay * 1000));
                 var filepath = Path.Combine(dirPath, $"{modelNameForFile}_{generateMode}_{fileNameCounter++:D4}.png");
                 var oldRT = camera.targetTexture;
+                var oldRect = camera.rect;
                 try {
+                    camera.rect = new Rect(0, 0, 1, 1);
                     camera.targetTexture = rt;
                     camera.Render();
                 } finally {
                     camera.targetTexture = oldRT;
+                    camera.rect = oldRect;
                 }
                 try {
                     var format = SystemInfo.GetCompatibleFormat(rt.graphicsFormat, FormatUsage.ReadPixels);
@@ -373,6 +378,14 @@ public class VRM2TrainImagesController : MonoBehaviour {
         var cameraPosition = target + math.mul(quaternion.Euler(new float3(math.radians(yawPitch), 0)), new float3(0, 0, distance));
         var cameraRotation = quaternion.LookRotationSafe(target - cameraPosition, new float3(0, 1, 0));
         cameraTransform.SetPositionAndRotation(cameraPosition, cameraRotation);
+    }
+
+    void OnSelectColor()  {
+        ColorPicker.Instance.Show(OnColorChanged, null, camera.backgroundColor, null);
+    }
+
+    void OnColorChanged(Color32 color) {
+        camera.backgroundColor = color;
     }
 
     enum GenerateMode {

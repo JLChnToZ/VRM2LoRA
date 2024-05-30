@@ -186,11 +186,36 @@
       },
       "hash": "fc8f4431b430cfefabf18a4417be4ca9ade229af"
     },
+    "com.yasirkula.dynamicpanels": {
+      "version": "file:com.yasirkula.dynamicpanels",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.yasirkula.ingamedebugconsole": {
+      "version": "file:com.yasirkula.ingamedebugconsole",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.yasirkula.runtimeinspector": {
+      "version": "file:com.yasirkula.runtimeinspector",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.yasirkula.simplefilebrowser": {
       "version": "file:com.yasirkula.simplefilebrowser",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
+    },
+    "com.yasirkula.texttotmp": {
+      "version": "https://github.com/yasirkula/UnityTextToTextMeshProUpgradeTool.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "66221b76794b50a422e5942c340b3340b8c75ecc"
     },
     "com.unity.modules.androidjni": {
       "version": "1.0.0",

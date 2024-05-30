@@ -1,0 +1,17 @@
+{
+    "name": "DynamicPanels.Editor",
+    "references": [
+        "DynamicPanels.Runtime",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "autoReferenced": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "defineConstraints": [],
+    "optionalUnityReferences": []
+}
